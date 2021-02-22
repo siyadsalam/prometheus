@@ -14,7 +14,7 @@ services:
     container_name: prometheus
     volumes:
       - ./prometheus/:/etc/prometheus/
-      - prometheus_data:/prometheus
+      - prometheus_data:/proetheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -55,6 +55,21 @@ services:
       - ./grafana/provisioning/:/etc/grafana/provisioning/
     env_file:
       - ./grafana/config.monitoring
+    networks:
+      - stack
+    restart: always
+
+  blackbox:
+    image: prom/blackbox-exporter:v0.18.0
+    container_name: blackbox
+    command:
+      - '--config.file=/config/blackbox.yml'
+    depends_on:
+      - prometheus
+    ports:
+      - '9115:9115'
+    volumes:
+      - ./blackbox/blackbox.yml:/config/blackbox.yml
     networks:
       - stack
     restart: always
