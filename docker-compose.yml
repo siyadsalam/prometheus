@@ -73,3 +73,12 @@ services:
     networks:
       - stack
     restart: always
+  
+  sampleapp:
+    image: siyad/devopsmonitoring:latest
+    container_name: sampleapp
+    ports:
+      - '80:8080'
+    networks:
+      - stack
+    restart: always    
